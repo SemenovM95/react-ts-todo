@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 import { Component, ComponentProps } from 'react'
 
 import NewTaskForm from 'components/NewTaskForm/NewTaskForm.tsx'
