@@ -5,7 +5,7 @@ import NewTaskForm from 'components/NewTaskForm/NewTaskForm.tsx'
 import Footer from 'components/Footer/Footer.tsx'
 import TaskList from 'components/TaskList/TaskList.tsx'
 
-import type { AppState } from './App.d'
+import type { AppState, Filter } from './App.d'
 
 export default class App extends Component<ComponentProps<any>, AppState> {
   constructor(props: ComponentProps<any>) {
@@ -40,12 +40,8 @@ export default class App extends Component<ComponentProps<any>, AppState> {
 
   displayedTodos = () => {
     const { filter, todos } = this.state
-    if (filter === 'active') {
-      return todos.filter((todo) => !todo.completed)
-    }
-    if (filter === 'completed') {
-      return todos.filter((todo) => todo.completed)
-    }
+    if (filter === 'active') return todos.filter((todo) => !todo.completed)
+    if (filter === 'completed') return todos.filter((todo) => todo.completed)
     return todos
   }
 
@@ -75,7 +71,7 @@ export default class App extends Component<ComponentProps<any>, AppState> {
     this.setState({ todos: todos.filter((todo) => todo.id !== id) })
   }
 
-  setFilter = (filter: 'all' | 'active' | 'completed') => {
+  setFilter = (filter: Filter) => {
     this.setState({ filter })
   }
 
