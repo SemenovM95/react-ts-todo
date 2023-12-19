@@ -1,4 +1,4 @@
 # react-ts-todo
 
 # Deployed via Vercel at
-https://react-ts-todo-hobvn5isn-semenovm95s-projects.vercel.app/
+https://react-ts-todo-1.vercel.app/
