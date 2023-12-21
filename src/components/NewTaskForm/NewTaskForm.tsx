@@ -8,24 +8,41 @@ export default class NewTaskForm extends Component<NewTaskFormProps, NewTaskForm
     super(props)
     this.state = {
       description: '',
+      min: '',
+      sec: '',
     }
   }
 
-  onInput = (event: ChangeEvent<HTMLInputElement>) => {
+  onDescriptionInput = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ description: event.target.value })
   }
 
+  onMinInput = (event: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ min: event.target.value })
+  }
+
+  onSecInput = (event: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ sec: event.target.value })
+  }
+
   onSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
+    if (!this.state.description) return
     if (event.nativeEvent instanceof KeyboardEvent && event.nativeEvent.key === 'Enter') {
       const { onAdd } = this.props
-      const { description } = this.state
-      onAdd(description)
-      this.setState({ description: '' })
+      const { description, min, sec } = this.state
+      onAdd({ description, min, sec })
+      this.setState({ description: '', min: '', sec: '' })
     }
   }
 
   render() {
-    const { description } = this.state
+    const {
+      state: { description, min, sec },
+      onDescriptionInput,
+      onMinInput,
+      onSecInput,
+      onSubmit,
+    } = this
     return (
       <header className="header">
         <h1>todos</h1>
@@ -34,8 +51,24 @@ export default class NewTaskForm extends Component<NewTaskFormProps, NewTaskForm
           className="new-todo"
           value={description}
           placeholder="What needs to be done?"
-          onChange={this.onInput}
-          onKeyDown={this.onSubmit}
+          onChange={onDescriptionInput}
+          onKeyDown={onSubmit}
+        />
+        <input
+          type="number"
+          className="new-todo-form__timer"
+          placeholder="Min"
+          value={min}
+          onChange={onMinInput}
+          onKeyDown={onSubmit}
+        />
+        <input
+          type="number"
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          value={sec}
+          onChange={onSecInput}
+          onKeyDown={onSubmit}
         />
       </header>
     )

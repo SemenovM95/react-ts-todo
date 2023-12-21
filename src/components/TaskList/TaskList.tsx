@@ -1,6 +1,6 @@
 import { Component } from 'react'
 
-import Task from 'components/Task/Task.tsx'
+import TaskItem from 'components/Task/TaskItem.tsx'
 
 import type { TaskListProps } from './TaskList.d'
 
@@ -16,11 +16,21 @@ export default class TaskList extends Component<TaskListProps> {
   }
 
   render() {
-    const { todos } = this.props
+    const {
+      props: { todos, onTimerTick },
+      handleCompleted,
+      handleDeleted,
+    } = this
     return (
       <ul className="todo-list">
         {todos.map((todo) => (
-          <Task todo={todo} key={todo.id} onCompleted={this.handleCompleted} onDeleted={this.handleDeleted} />
+          <TaskItem
+            todo={todo}
+            key={todo.id}
+            onCompleted={handleCompleted}
+            onDeleted={handleDeleted}
+            onTimerTick={onTimerTick}
+          />
         ))}
       </ul>
     )

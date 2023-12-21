@@ -4,7 +4,7 @@ $color_3: rgba(0, 0, 0, 0.4);
 $color_4: rgba(175, 47, 47, 0.15);
 $color_5: #e6e6e6;
 $color_6: #737373;
-$color_7: rgb(128, 128, 128);
+$color_7: gray;
 $color_8: #4d4d4d;
 $color_9: #cdcdcd;
 $color_10: #cc9a9a;
@@ -61,7 +61,7 @@ button {
     border: none;
   }
 }
-:focus {
+.focus {
   outline: 0;
 }
 .hidden {
@@ -83,7 +83,7 @@ button {
       font-weight: 300;
       color: $color_3;
     }
-    &::placeholder {
+    &::input-placeholder {
       font-style: italic;
       font-weight: 300;
       color: $color_3;
@@ -101,6 +101,11 @@ button {
     -moz-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
   }
+}
+.new-todo-form {
+  display: flex;
+  margin-bottom: 0;
+
 }
 .new-todo {
   position: relative;
@@ -120,7 +125,30 @@ button {
   padding: 16px 16px 16px 60px;
   border: none;
   background: rgba(0, 0, 0, 0.003);
-  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+  width: 70%;
+}
+.new-todo-form__timer {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  font-family: $font-family_1;
+  font-weight: inherit;
+  line-height: 1.4em;
+  color: $color_1;
+  padding: 6px;
+  border: 1px solid #999;
+  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 16px 16px 16px 60px;
+  border: none;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+  width: 15%;
+  padding-left: 16px;
 }
 .edit {
   position: relative;
@@ -223,11 +251,11 @@ button {
       align-items: center;
       justify-content: space-between;
       padding: 15px 85px 15px 60px;
-      .created {
+      .description {
         font-size: 13px;
         color: $color_7;
       }
-      .description {
+      .title {
         word-break: break-all;
         display: block;
         line-height: 1.2;
@@ -236,15 +264,15 @@ button {
         color: $color_8;
       }
     }
+    .view {
+      position: relative;
+    }
     .icon {
-      position: absolute;
-      top: 0;
-      bottom: -3px;
       width: 30px;
       height: 40px;
       font-size: 34px;
       color: $color_10;
-      margin: auto 0 11px;
+      margin: auto 0;
       transition: color 0.2s ease-out;
       cursor: pointer;
       &:hover {
@@ -252,21 +280,40 @@ button {
       }
     }
     .icon-destroy {
+      position: absolute;
+      top: 0;
+      bottom: -3px;
       right: 10px;
       &:after {
         content: '×';
       }
     }
     .icon-edit {
+      position: absolute;
+      top: 0;
+      bottom: -3px;
       font-size: 19px;
       right: 45px;
       &:after {
         content: '✎';
       }
     }
+    .icon-pause {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+    .icon-play {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
     .edit {
       display: none;
     }
+  }
+  .timer-value {
+    margin-left: 8px;
   }
   li.editing {
     border-bottom: none;
@@ -286,11 +333,21 @@ button {
   }
   li.completed {
     label {
-      .description {
+      .title {
         color: $color_9;
         text-decoration: line-through;
       }
     }
+  }
+}
+.icon-pause {
+  &:after {
+    content: '⏸';
+  }
+}
+.icon-play {
+  &:after {
+    content: '▶';
   }
 }
 .footer {
@@ -379,7 +436,7 @@ button {
     }
   }
 }
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
+@media screen and (-webkit-min-device-pixel-ratio:0) {
   .toggle-all {
     background: none;
   }
@@ -399,4 +456,15 @@ button {
   .filters {
     bottom: 10px;
   }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

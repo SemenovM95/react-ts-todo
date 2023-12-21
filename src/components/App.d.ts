@@ -1,5 +1,7 @@
+import type Task from 'components/Task/TaskItem.d'
+
 declare interface AppState {
-  todos: Todo[]
+  todos: Task[]
   filter: Filter
 }
 

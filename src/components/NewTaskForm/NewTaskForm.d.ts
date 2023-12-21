@@ -1,9 +1,11 @@
 declare interface NewTaskFormProps {
-  onAdd: (description: string) => void
+  onAdd: ({ description: string, min: string, sec: string }) => void
 }
 
 declare interface NewTaskFormState {
   description: string
+  min: string
+  sec: string
 }
 
 export { NewTaskFormProps, NewTaskFormState }

@@ -1,4 +1,4 @@
-import type { Filter } from 'src/App.d'
+import type { Filter } from 'components/App'
 
 declare interface TasksFilterProps {
   onSetFilter: (filter: Filter) => void
