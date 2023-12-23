@@ -1,4 +1,4 @@
-import type Task from 'components/Task/TaskItem.d'
+import type Task from 'components/TaskItem/TaskItem.d'
 
 declare interface AppState {
   todos: Task[]

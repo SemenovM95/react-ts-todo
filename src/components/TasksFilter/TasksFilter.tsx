@@ -1,36 +1,25 @@
-import { Component } from 'react'
+import { ReactElement } from 'react'
 
 import type { TasksFilterProps, Filter } from './TasksFilter.d'
 
-export default class TasksFilter extends Component<TasksFilterProps> {
-  filters: Filter[] = ['all', 'active', 'completed']
+export default function TasksFilter(props: TasksFilterProps): ReactElement {
+  const filters: Filter[] = ['all', 'active', 'completed']
+  const { currentFilter, onSetFilter } = props
 
-  setFilter = (filter: Filter) => {
-    const { onSetFilter } = this.props
-    onSetFilter(filter)
-  }
+  const setFilter = (filter: Filter) => onSetFilter(filter)
 
-  render() {
-    return (
-      <ul className="filters">
-        {this.filters.map((filter) => {
-          const { currentFilter } = this.props
-          const className = currentFilter === filter ? 'selected' : ''
-          return (
-            <li key={filter}>
-              <button
-                type="button"
-                className={className}
-                onClick={() => {
-                  this.setFilter(filter)
-                }}
-              >
-                {filter[0].toUpperCase() + filter.slice(1)}
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
+  return (
+    <ul className="filters">
+      {filters.map((filter) => {
+        const className = currentFilter === filter ? 'selected' : ''
+        return (
+          <li key={filter}>
+            <button type="button" className={className} onClick={() => setFilter(filter)}>
+              {filter[0].toUpperCase() + filter.slice(1)}
+            </button>
+          </li>
+        )
+      })}
+    </ul>
+  )
 }

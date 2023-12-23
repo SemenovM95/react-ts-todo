@@ -5,9 +5,7 @@ import TasksFilter from 'components/TasksFilter/TasksFilter.tsx'
 // NOTE: Абсолюно лишний в иерархии компонент, порождающий пропдриллинг, но по заданию он должен быть, так что...
 export default function Footer({ onSetFilter, currentFilter, itemsLeft, onClearCompleted }: FooterProps) {
   const setFilter = (filter: Filter) => onSetFilter(filter)
-  const clearCompleted = () => {
-    onClearCompleted()
-  }
+  const clearCompleted = () => onClearCompleted()
 
   return (
     <footer className="footer">

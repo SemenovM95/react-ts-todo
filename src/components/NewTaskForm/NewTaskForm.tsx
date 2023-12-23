@@ -1,76 +1,67 @@
-import { Component } from 'react'
+import { useState } from 'react'
 import type { ChangeEvent, SyntheticEvent } from 'react'
 
-import type { NewTaskFormProps, NewTaskFormState } from './NewTaskForm.d'
+import type { NewTaskFormProps } from './NewTaskForm.d'
 
-export default class NewTaskForm extends Component<NewTaskFormProps, NewTaskFormState> {
-  constructor(props: NewTaskFormProps) {
-    super(props)
-    this.state = {
-      description: '',
-      min: '',
-      sec: '',
-    }
+export default function NewTaskForm(props: NewTaskFormProps) {
+  const { onAdd } = props
+  const [description, setDescription] = useState('')
+  const [min, setMin] = useState('')
+  const [sec, setSec] = useState('')
+
+  const resetFormData = () => {
+    setDescription('')
+    setMin('')
+    setSec('')
   }
 
-  onDescriptionInput = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ description: event.target.value })
+  const onDescriptionInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value)
   }
 
-  onMinInput = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ min: event.target.value })
+  const onMinInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setMin(event.target.value)
   }
 
-  onSecInput = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ sec: event.target.value })
+  const onSecInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setSec(event.target.value)
   }
 
-  onSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
-    if (!this.state.description) return
+  const onSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
+    if (!description) return
     if (event.nativeEvent instanceof KeyboardEvent && event.nativeEvent.key === 'Enter') {
-      const { onAdd } = this.props
-      const { description, min, sec } = this.state
       onAdd({ description, min, sec })
-      this.setState({ description: '', min: '', sec: '' })
+      resetFormData()
     }
   }
 
-  render() {
-    const {
-      state: { description, min, sec },
-      onDescriptionInput,
-      onMinInput,
-      onSecInput,
-      onSubmit,
-    } = this
-    return (
-      <header className="header">
-        <h1>todos</h1>
-        <input
-          type="text"
-          className="new-todo"
-          value={description}
-          placeholder="What needs to be done?"
-          onChange={onDescriptionInput}
-          onKeyDown={onSubmit}
-        />
-        <input
-          type="number"
-          className="new-todo-form__timer"
-          placeholder="Min"
-          value={min}
-          onChange={onMinInput}
-          onKeyDown={onSubmit}
-        />
-        <input
-          type="number"
-          className="new-todo-form__timer"
-          placeholder="Sec"
-          value={sec}
-          onChange={onSecInput}
-          onKeyDown={onSubmit}
-        />
-      </header>
-    )
-  }
+  return (
+    <header className="header">
+      <h1>todos</h1>
+      <input
+        type="text"
+        className="new-todo"
+        value={description}
+        placeholder="What needs to be done?"
+        onChange={onDescriptionInput}
+        onKeyDown={onSubmit}
+      />
+      <input
+        type="number"
+        className="new-todo-form__timer"
+        placeholder="Min"
+        value={min}
+        onChange={onMinInput}
+        onKeyDown={onSubmit}
+      />
+      <input
+        type="number"
+        className="new-todo-form__timer"
+        placeholder="Sec"
+        value={sec}
+        onChange={onSecInput}
+        onKeyDown={onSubmit}
+      />
+    </header>
+  )
 }

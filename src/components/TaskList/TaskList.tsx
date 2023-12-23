@@ -1,38 +1,30 @@
-import { Component } from 'react'
+import { ReactElement } from 'react'
 
-import TaskItem from 'components/Task/TaskItem.tsx'
+import TaskItem from 'components/TaskItem/TaskItem.tsx'
 
 import type { TaskListProps } from './TaskList.d'
 
-export default class TaskList extends Component<TaskListProps> {
-  handleCompleted = (id: number) => {
-    const { onCompleted } = this.props
+export default function TaskList(props: TaskListProps): ReactElement {
+  const { todos, onTimerTick, onCompleted, onDeleted } = props
+  const handleCompleted = (id: number) => {
     onCompleted(id)
   }
 
-  handleDeleted = (id: number) => {
-    const { onDeleted } = this.props
+  const handleDeleted = (id: number) => {
     onDeleted(id)
   }
 
-  render() {
-    const {
-      props: { todos, onTimerTick },
-      handleCompleted,
-      handleDeleted,
-    } = this
-    return (
-      <ul className="todo-list">
-        {todos.map((todo) => (
-          <TaskItem
-            todo={todo}
-            key={todo.id}
-            onCompleted={handleCompleted}
-            onDeleted={handleDeleted}
-            onTimerTick={onTimerTick}
-          />
-        ))}
-      </ul>
-    )
-  }
+  return (
+    <ul className="todo-list">
+      {todos.map((todo) => (
+        <TaskItem
+          todo={todo}
+          key={todo.id}
+          onCompleted={handleCompleted}
+          onDeleted={handleDeleted}
+          onTimerTick={onTimerTick}
+        />
+      ))}
+    </ul>
+  )
 }

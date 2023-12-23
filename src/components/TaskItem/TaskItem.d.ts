@@ -4,7 +4,7 @@ interface Task {
   created: string | Date
   editing: boolean
   id: number
-  timer?: number
+  timer: number | null
 }
 
 interface TaskItemProps {
