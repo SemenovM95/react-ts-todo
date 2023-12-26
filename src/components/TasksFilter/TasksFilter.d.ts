@@ -1,8 +1,10 @@
 import type { Filter } from 'components/App'
+import { Task } from 'components/TaskItem/TaskItem'
+import { Dispatch, SetStateAction } from 'react'
 
 declare interface TasksFilterProps {
-  onSetFilter: (filter: Filter) => void
-  currentFilter: Filter
+  todos: Task[]
+  setDisplayedTodos: Dispatch<SetStateAction<Task[]>>
 }
 
 export { TasksFilterProps, Filter }

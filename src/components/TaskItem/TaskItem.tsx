@@ -1,12 +1,21 @@
-import { useEffect, useState, ReactElement } from 'react'
+import { useEffect, useState, ReactElement, SyntheticEvent } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 
 import type { TaskItemProps } from './TaskItem.d'
 
-export default function TaskItem(props: TaskItemProps): ReactElement {
-  const { todo, onCompleted, onDeleted, onTimerTick } = props
+export default function TaskItem({
+  todo,
+  onCompleted,
+  onDeleted,
+  onTimerTick,
+  onToggleEditing,
+  onEditTask,
+}: TaskItemProps): ReactElement {
   const { description, timer, created, completed, id, editing } = todo
   const [timerId, setTimerId] = useState<number | null>(null)
+  const [newDescription, setNewDescription] = useState(description)
+  const [newMin, setNewMin] = useState(Math.floor(Number(timer) / 60).toString())
+  const [newSec, setNewSec] = useState(Math.floor(Number(timer) % 60).toString())
 
   const startTimer = () => {
     if (timerId || !todo.timer) return
@@ -33,9 +42,25 @@ export default function TaskItem(props: TaskItemProps): ReactElement {
     stopTimer()
   }
 
+  const handleEditing = () => {
+    onToggleEditing(id)
+    if (timerId) stopTimer()
+  }
+
   const handleDeleted = () => {
     onDeleted(id)
     stopTimer()
+  }
+
+  const onChangeSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
+    if (!newDescription) return
+    const newTimer = Number(newMin) * 60 + Number(newSec)
+    if (event.nativeEvent instanceof KeyboardEvent && event.nativeEvent.key === 'Enter') {
+      onEditTask(id, { description: newDescription, timer: newTimer })
+    }
+    if (event.nativeEvent instanceof KeyboardEvent && event.nativeEvent.key === 'Escape') {
+      onToggleEditing(id)
+    }
   }
 
   useEffect(() => {
@@ -44,7 +69,6 @@ export default function TaskItem(props: TaskItemProps): ReactElement {
   useEffect(() => {
     return () => {
       if (timerId) stopTimer()
-      console.log(`task ${id} unmounted`)
     }
   }, [])
 
@@ -81,11 +105,38 @@ export default function TaskItem(props: TaskItemProps): ReactElement {
             )}
             <span className="description">created {createdTime} ago</span>
           </label>
-          <button type="button" className="icon icon-edit" aria-label="edit" />
+          <button type="button" className="icon icon-edit" aria-label="edit" onClick={handleEditing} />
           <button type="button" className="icon icon-destroy" aria-label="delete" onClick={handleDeleted} />
         </div>
       ) : (
-        <input type="text" className="edit" defaultValue="Editing task" />
+        <>
+          <input
+            type="text"
+            className="edit"
+            placeholder="What needs to be done?"
+            value={newDescription}
+            onChange={editing && ((event) => setNewDescription(event.target?.value))}
+            onKeyDown={onChangeSubmit}
+            onBlur={onChangeSubmit}
+            autoFocus
+          />
+          <input
+            type="number"
+            className="new-todo-form__timer"
+            placeholder="Min"
+            value={newMin}
+            onChange={editing && ((event) => setNewMin(event.target?.value))}
+            onKeyDown={onChangeSubmit}
+          />
+          <input
+            type="number"
+            className="new-todo-form__timer"
+            placeholder="Sec"
+            value={newSec}
+            onChange={editing && ((event) => setNewSec(event.target?.value))}
+            onKeyDown={onChangeSubmit}
+          />
+        </>
       )}
     </li>
   )

@@ -318,9 +318,10 @@ button {
   li.editing {
     border-bottom: none;
     padding: 0;
+    display: flex;
     .edit {
       display: block;
-      width: calc(100% - 43px);
+      width: calc(100% - 160px);
       padding: 12px 16px;
       margin: 0 0 0 43px;
     }

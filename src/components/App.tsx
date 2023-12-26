@@ -5,8 +5,6 @@ import TaskList from 'components/TaskList/TaskList.tsx'
 import Footer from 'components/Footer/Footer.tsx'
 import type { Task } from 'components/TaskItem/TaskItem.d'
 
-import type { Filter } from './App.d'
-
 import './App.scss'
 
 const defaultTodos = [
@@ -38,74 +36,14 @@ const defaultTodos = [
 
 export default function App(): ReactElement {
   const [todos, setTodos] = useState<Task[]>(defaultTodos)
-  const [filter, setFilter] = useState<Filter>('all')
-
-  const displayedTodos = () => {
-    if (filter === 'active') return todos.filter((todo) => !todo.completed)
-    if (filter === 'completed') return todos.filter((todo) => todo.completed)
-    return todos
-  }
-
-  const addTodo = ({ description, min, sec }: { description: string; min: string; sec: string }) => {
-    const timer = min || sec ? Number(min || 0) * 60 + Number(sec || 0) : null
-    setTodos((prev) => {
-      const id = prev.reduce((maxId, todo) => Math.max(todo.id, maxId), 0) + 1
-      const newTodo = { completed: false, description, created: 'now', editing: false, id, timer }
-      return prev.concat(newTodo)
-    })
-  }
-
-  const handleCompleted = (id: number) => {
-    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)))
-  }
-
-  const handleDeleted = (id: number) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id))
-  }
-
-  const clearCompleted = () => {
-    setTodos((prev) => prev.filter((todo) => !todo.completed))
-  }
-
-  const onSetFilter = (newFilter: Filter) => {
-    setFilter(newFilter)
-  }
-
-  const countUnfinished = (): number => {
-    return todos.filter((todo) => !todo.completed).length
-  }
-
-  const tickTimer = (id: number) => {
-    const found = todos.findIndex((todo) => todo.id === id)
-    if (found !== -1) {
-      setTodos((prev) => {
-        const newState = prev.slice()
-        const todo = newState[found]
-        newState[found] = {
-          ...todo,
-          timer: (todo.timer as number) - 1,
-        }
-        return newState
-      })
-    }
-  }
+  const [displayedTodos, setDisplayedTodos] = useState<Task[]>(todos)
 
   return (
     <section className="todoapp">
-      <NewTaskForm onAdd={addTodo} />
+      <NewTaskForm setTodos={setTodos} />
       <section className="main">
-        <TaskList
-          todos={displayedTodos()}
-          onCompleted={handleCompleted}
-          onDeleted={handleDeleted}
-          onTimerTick={tickTimer}
-        />
-        <Footer
-          currentFilter={filter}
-          itemsLeft={countUnfinished()}
-          onClearCompleted={clearCompleted}
-          onSetFilter={onSetFilter}
-        />
+        <TaskList todos={displayedTodos} setTodos={setTodos} />
+        <Footer todos={todos} setTodos={setTodos} setDisplayedTodos={setDisplayedTodos} />
       </section>
     </section>
   )

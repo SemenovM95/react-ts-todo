@@ -11,6 +11,8 @@ interface TaskItemProps {
   todo: Task
   onCompleted: (id: number) => void
   onDeleted: (id: number) => void
+  onToggleEditing: (id: number) => void
+  onEditTask: (id: number, { description: string, timer: number }) => void
   onTimerTick: (id: number) => void
 }
 

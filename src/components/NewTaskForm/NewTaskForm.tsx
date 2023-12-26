@@ -3,8 +3,7 @@ import type { ChangeEvent, SyntheticEvent } from 'react'
 
 import type { NewTaskFormProps } from './NewTaskForm.d'
 
-export default function NewTaskForm(props: NewTaskFormProps) {
-  const { onAdd } = props
+export default function NewTaskForm({ setTodos }: NewTaskFormProps) {
   const [description, setDescription] = useState('')
   const [min, setMin] = useState('')
   const [sec, setSec] = useState('')
@@ -27,10 +26,22 @@ export default function NewTaskForm(props: NewTaskFormProps) {
     setSec(event.target.value)
   }
 
+  const addTodo = () => {
+    const timer = min || sec ? Number(min || 0) * 60 + Number(sec || 0) : null
+    setTodos((prev) => {
+      const id = prev.reduce((maxId, todo) => Math.max(todo.id, maxId), 0) + 1
+      const newTodo = { completed: false, description, created: 'now', editing: false, id, timer }
+      return prev.concat(newTodo)
+    })
+  }
+
   const onSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
     if (!description) return
     if (event.nativeEvent instanceof KeyboardEvent && event.nativeEvent.key === 'Enter') {
-      onAdd({ description, min, sec })
+      addTodo()
+      resetFormData()
+    }
+    if (event.nativeEvent instanceof KeyboardEvent && event.nativeEvent.key === 'Escape') {
       resetFormData()
     }
   }

@@ -1,8 +1,10 @@
+import { Dispatch, SetStateAction } from 'react'
+import { Task } from 'components/TaskItem/TaskItem'
+
 declare interface FooterProps {
-  onSetFilter: (filter: 'all' | 'active' | 'completed') => void
-  currentFilter: 'all' | 'active' | 'completed'
-  onClearCompleted: () => void
-  itemsLeft: number
+  todos: Task[]
+  setTodos: Dispatch<SetStateAction<Task[]>>
+  setDisplayedTodos: Dispatch<SetStateAction<Task[]>>
 }
 
 export { FooterProps }

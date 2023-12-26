@@ -1,5 +1,8 @@
+import { Dispatch, SetStateAction } from 'react'
+import { Task } from 'components/TaskItem/TaskItem'
+
 declare interface NewTaskFormProps {
-  onAdd: ({ description: string, min: string, sec: string }) => void
+  setTodos: Dispatch<SetStateAction<Task[]>>
 }
 
 declare interface NewTaskFormState {
